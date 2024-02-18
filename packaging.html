@@ -260,6 +260,29 @@
     // Get and render products on page load
     getProducts2();
 
+
+
+     // Firebase configuration (replace with your actual config)
+     const firebaseConfig = {
+        apiKey: "AIzaSyCd-EUiNOFw7FvGpVbqniU7vnr1zV4-Tjk",
+        authDomain: "maasel-prince.firebaseapp.com",
+        projectId: "maasel-prince",
+        storageBucket: "maasel-prince.appspot.com",
+        messagingSenderId: "247610669994",
+        appId: "1:247610669994:web:6d7ad602425782098bc9d3",
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Check if the user is authenticated on page load
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (!user) {
+            // If the user is not authenticated, redirect to the login page
+            window.location.href = 'loginpage.html';
+        }
+    });
   </script>
 
 </body>
