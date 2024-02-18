@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<style>
+    body {
+        background-color: #f8f9fa; /* Set a light background color */
+    }
+
+    .container {
+        margin-top: 5rem;
+    }
+
+    .login-container {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .login-form {
+        margin-top: 2rem;
+    }
+
+    /* Customize button style */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+<div class="row justify-content-md-center">
+    <div class="col-md-4 login-container">
+        <h2 class="text-center mb-4">Login</h2>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="username">Email:</label>
+                <input type="email" class="form-control" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+    </div>
+</div>
+</div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script>
+        // Firebase configuration (replace with your actual config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd-EUiNOFw7FvGpVbqniU7vnr1zV4-Tjk",
+      authDomain: "maasel-prince.firebaseapp.com",
+      projectId: "maasel-prince",
+      storageBucket: "maasel-prince.appspot.com",
+      messagingSenderId: "247610669994",
+      appId: "1:247610669994:web:6d7ad602425782098bc9d3",
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Event listener for the form submission
+        const loginForm = document.getElementById('loginForm');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Sign in with Firebase Authentication
+                const userCredential = await auth.signInWithEmailAndPassword(username, password);
+
+                // If authentication is successful, redirect to mainpage.html
+                window.location.href = 'mainpage.html';
+            } catch (error) {
+                // Handle authentication errors
+                alert('Invalid username or password. Please try again.');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maasel Prince Products</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Include Firebase SDK version 8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="navlinkkkkkk">
+
+    <a href="mainpage.html">القائمة الرئيسية</a>
+    <a href="index.html" >بيان معسل اوروبي</a>
+    <a href="black_maasel.html" >بيان معسل اسود</a>
+    <a href="carton.html" >بيان كرتون</a>
+    <a href="materials.html" >بيان خامات</a>
+    <a href="packaging.html" >بيان تغليف</a>
+    <a href="finalproduct.html">بيان منتج نهائي</a>
+</div>
+
+
+
+
+
+  <h1>بيان علب معسل البرنس الاوروبي</h1>
+  <!-- Form for adding new products -->
+  <form id="productForm" class="input1">
+    <div>
+      <label for="productName">Product Name:</label>
+      <input type="text" id="productName" name="productName" required>
+    </div>
+    <div>
+      <label for="productQuantity">Product Quantity:</label>
+      <input type="number" id="productQuantity" name="productQuantity" required>
+    </div>
+    <div>
+      <button type="submit">Add Product</button>
+    </div>
+  </form>
+
+  <!-- Table for displaying and updating products -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Original Name</th>
+        <th>Action</th>
+        <th>Update Quantity</th>
+        <th>Action</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="productTableBody"></tbody>
+  </table>
+
+  <script>
+    // Firebase configuration (replace with your actual config)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCd-EUiNOFw7FvGpVbqniU7vnr1zV4-Tjk",
+      authDomain: "maasel-prince.firebaseapp.com",
+      projectId: "maasel-prince",
+      storageBucket: "maasel-prince.appspot.com",
+      messagingSenderId: "247610669994",
+      appId: "1:247610669994:web:6d7ad602425782098bc9d3",
+    };
+  
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const firestore = firebase.firestore();
+  
+    // Function to add a new product to Firestore
+    async function addProduct(name, quantity) {
+      // Add data to Firestore
+      await firestore.collection('products').add({
+        name: name,
+        quantity: quantity
+      });
+  
+      // Refresh the table after adding a new product
+      getProducts();
+    }
+  
+    // Function to update product name in Firestore and table
+    async function updateProductName(productId, newName) {
+      await firestore.collection('products').doc(productId).update({
+        name: newName
+      });
+  
+      // Refresh the table after updating name
+      getProducts();
+    }
+  
+    // Function to add quantity to Firestore and table
+    async function addQuantity(productId) {
+      const inputElement = document.getElementById(`quantityInput_${productId}`);
+      const quantityToAdd = parseInt(inputElement.value, 10);
+  
+      if (isNaN(quantityToAdd) || quantityToAdd <= 0) {
+        alert('Please enter a valid quantity to add.');
+        return;
+      }
+  
+      await firestore.collection('products').doc(productId).update({
+        quantity: firebase.firestore.FieldValue.increment(quantityToAdd)
+      });
+  
+      // Refresh the table after updating quantity
+      getProducts();
+    }
+  
+    // Function to remove quantity from Firestore and table
+    async function removeQuantity(productId) {
+      const inputElement = document.getElementById(`quantityInput_${productId}`);
+      const quantityToRemove = parseInt(inputElement.value, 10);
+  
+      if (isNaN(quantityToRemove) || quantityToRemove <= 0) {
+        alert('Please enter a valid quantity to remove.');
+        return;
+      }
+  
+      await firestore.collection('products').doc(productId).update({
+        quantity: firebase.firestore.FieldValue.increment(-quantityToRemove)
+      });
+  
+      // Refresh the table after updating quantity
+      getProducts();
+    }
+  
+    // Function to check and apply red background for low quantity
+    function checkQuantityBackground() {
+    const tableRows = document.getElementById('productTableBody').getElementsByTagName('tr');
+
+    for (let i = 0; i < tableRows.length; i++) {
+      const quantityCell = tableRows[i].getElementsByTagName('td')[2]; // Assuming quantity is in the third column
+      const quantityValue = parseInt(quantityCell.innerText, 10);
+
+      // Apply red background if quantity is lower than 3000
+      if (quantityValue < 3000) {
+        quantityCell.style.backgroundColor = 'red';
+      } else {
+        quantityCell.style.backgroundColor = ''; // Reset background color if not lower than 3000
+      }
+    }
+  }
+
+  // Function to render products in the table
+  function renderProducts(products) {
+    const tableBody = document.getElementById('productTableBody');
+    tableBody.innerHTML = '';
+    for (let i = 0; i < 80; i++) {
+      const product = products[i] || {};
+      const productId = product.id;
+      const productName = product.name || "No Name";
+      const productQuantity = product.quantity || 0;
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${i + 1}</td>
+        <td>${productName}</td>
+        <td>${productQuantity}</td>
+        <td><input type="text" id="nameInput_${productId}" value="${productName}" /></td>
+        <td><button onclick="updateProduct('${productId}')">Update</button></td>
+        <td><input type="number" id="quantityInput_${productId}" value="0" onkeydown="return event.key !== 'Enter';" /></td>
+        <td><button onclick="addQuantityButtonClick('${productId}')">Add</button></td>
+        <td><button class="buttonnn" onclick="removeQuantityButtonClick('${productId}')">Remove</button></td>
+      `;
+
+      tableBody.appendChild(row);
+    }
+
+    // Check and apply red background after rendering products
+    checkQuantityBackground();
+  }
+  
+    // Function to get products from Firestore
+    async function getProducts() {
+      const productsCollection = await firestore.collection('products').get();
+      const products = productsCollection.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderProducts(products);
+    }
+  
+    // Event listener for the form submission
+    const form = document.getElementById('productForm');
+  
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const productName = document.getElementById('productName').value;
+      const productQuantity = document.getElementById('productQuantity').value;
+  
+      // Check if either name or quantity is provided
+      if (!productName && !productQuantity) {
+        alert('Please enter a name or quantity.');
+        return;
+      }
+  
+      // Add a new product to Firestore with the provided name and quantity
+      await addProduct(productName, parseInt(productQuantity, 10));
+  
+      // Clear the form fields
+      document.getElementById('productName').value = '';
+      document.getElementById('productQuantity').value = '';
+    });
+  
+    // Event listener for the "Update" button in cell 5
+    function updateProduct(productId) {
+      const originalNameInput = document.getElementById(`nameInput_${productId}`);
+      const newName = originalNameInput.value;
+  
+      updateProductName(productId, newName);
+    }
+  
+    // Event listener for name input changes
+    document.getElementById('productTableBody').addEventListener('input', (e) => {
+      const targetId = e.target.id;
+      const productId = targetId.split('_')[1];
+  
+      // Check if the input is for updating quantity
+      if (targetId.includes('quantityInput')) {
+        return;
+      }
+  
+      const newName = e.target.value;
+  
+      // Update product name when the "Update" button is clicked
+      // This prevents immediate update on input change
+      document.getElementById(`nameInput_${productId}`).value = newName;
+    });
+  
+    // Event listener for the "Add" button in cell 7
+    function addQuantityButtonClick(productId) {
+      addQuantity(productId);
+    }
+  
+    // Event listener for the "Remove" button in cell 8
+    function removeQuantityButtonClick(productId) {
+      removeQuantity(productId);
+    }
+  
+    // Get and render products on page load
+    getProducts();
+  
+  </script>
+  
+  </body>
+  
+  </html>

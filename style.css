@@ -1,0 +1,105 @@
+.input1{
+display: flex;
+align-items:center;
+text-align: start;
+justify-content: center;
+margin: 50px;
+gap: 10px;
+}
+/* Button Style */
+button {
+    padding: 12px 20px;
+    background-color: #4CAF50; /* Green color or your accent color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease-in-out;
+    margin: auto;
+    display: flex;
+align-items: center;
+justify-content: center;
+  }
+  
+  button:hover {
+    background-color: #45a049; /* Darker shade of the main color on hover */
+  }
+  /* Input Style */
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  input:focus {
+    border-color: #4CAF50; /* Green color or your accent color */
+  }
+  
+
+h1{
+    text-align: center;
+}
+
+.buttonnn{
+    padding: 12px 20px;
+    background-color: #c13333; /* Green color or your accent color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease-in-out;
+    margin: auto;
+    display: flex;
+align-items: center;
+justify-content: center;
+
+}
+
+.buttonnn:hover {
+    background-color: #962e2e; /* Darker shade of the main color on hover */
+  }
+
+  th{
+    text-align: center;
+  }
+
+  td{
+    text-align: center;
+  }
+
+  .navlinkkkkkk {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Adjust as needed */
+    margin: 20px; /* Adjust the margin for the entire navigation */
+}
+
+.navlinkkkkkk a {
+    color: #7193b8; /* Blue color, you can change this to your preferred color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Smooth transition for color change */
+    padding: 10px; /* Add padding for each link */
+    border: 1px solid #7193b8; /* Add border for each link */
+    margin: 10px; /* Adjust the margin between links */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    text-align: center; /* Center text within the box */
+    width: 150px; /* Set a fixed width for each box, adjust as needed */
+}
+
+.navlinkkkkkk a:hover {
+    color: #0056b3; /* Darker blue color on hover, you can adjust this as well */
+    background-color: #e0e0e0; /* Add a background color on hover */
+}
+
+.navlinkkkkkk a:active {
+    color: #e83e8c; /* Pink color for active links */
+}
+
+.navlinkkkkkk a:visited {
+    color: #000000; /* Purple color for visited links, you can adjust this too */
+}
