@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maasel Prince Products - Page 2</title>
+  <title>Maasel Prince Products - Final Product</title>
   <link rel="stylesheet" href="style.css">
   <!-- Include Firebase SDK version 8 -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -30,52 +30,53 @@
 </head>
 
 <body>
-    <div class="navlinkkkkkk">
-
-        <a href="mainpage.html">القائمة الرئيسية</a>
-        <a href="index.html" >بيان معسل اوروبي</a>
-        <a href="black_maasel.html" >بيان معسل اسود</a>
-        <a href="carton.html" >بيان كرتون</a>
-        <a href="materials.html" >بيان خامات</a>
-        <a href="packaging.html" >بيان تغليف</a>
-        <a href="finalproduct.html">بيان منتج نهائي</a>
-    </div>
-  <h1>بيان مواد تغليف</h1>
-  <!-- Form for adding new products -->
-  <form id="productForm2" class="input1">
+  <div class="navlinkkkkkk">
+    <a href="mainpage.html">القائمة الرئيسية</a>
+    <a href="index.html">بيان معسل اوروبي</a>
+    <a href="black_maasel.html">بيان معسل اسود</a>
+    <a href="carton.html">بيان كرتون</a>
+    <a href="materials.html">بيان خامات</a>
+    <a href="packaging.html">بيان تغليف</a>
+    <a href="finalproduct.html">بيان منتج نهائي</a>
+  </div>
+  <h1>بيان منتج نهائي</h1>
+  <!-- Form for adding new final products -->
+  <form id="finalProductForm" class="input1">
     <div>
-      <label for="productName2">Product Name:</label>
-      <input type="text" id="productName2" name="productName2" required>
+      <label for="finalProductName">Product Name:</label>
+      <input type="text" id="finalProductName" name="finalProductName" required>
     </div>
     <div>
-      <label for="productQuantity2">Product Quantity:</label>
-      <input type="number" id="productQuantity2" name="productQuantity2" required>
+      <label for="finalProductQuantity">Product Quantity:</label>
+      <input type="number" id="finalProductQuantity" name="finalProductQuantity" required>
     </div>
     <div>
       <button type="submit">Add Product</button>
     </div>
   </form>
 
-  <!-- Table for displaying and updating products -->
+  <!-- Table for displaying and updating final products -->
   <table>
     <thead>
       <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Quantity</th>
-        <th>Original Name</th>
-        <th>Action</th>
-        <th>Update Quantity</th>
-        <th>Action</th>
-        <th>Action</th>
+        <th>اسم المنتج</th>
+        <th>الكمية المتاحة</th>
+        <th>تعديل اسم المنتج</th>
+        <th></th>
+        <th>تعديل الكمية</th>
+        <th></th>
+        <th></th>
+        <th>حذف المنتج</th>
       </tr>
     </thead>
-    <tbody id="productTableBody2"></tbody>
+    <tbody id="finalProductTableBody"></tbody>
   </table>
-  <button onclick="exportData()" style="margin-top: 20px;">Export Data To Excel Sheet</button>
+  <button onclick="exportFinalProductData()" style="margin-top: 20px;">Export Data To Excel Sheet</button>
+
   <script>
     // Firebase configuration (replace with your actual config)
-    const firebaseConfig2 = {
+    const firebaseConfig = {
       apiKey: "AIzaSyCd-EUiNOFw7FvGpVbqniU7vnr1zV4-Tjk",
       authDomain: "maasel-prince.firebaseapp.com",
       projectId: "maasel-prince",
@@ -85,34 +86,29 @@
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig2);
-    const firestore2 = firebase.firestore();
+    firebase.initializeApp(firebaseConfig);
+    const firestore = firebase.firestore();
 
-    // Function to add a new product to Firestore
-    async function addProduct2(name, quantity) {
-      // Add data to Firestore in the 'packaging' collection
-      await firestore2.collection('packaging').add({
+    // Function to add a new final product to Firestore
+    async function addFinalProduct(name, quantity) {
+      await firestore.collection('finalProducts').add({
         name: name,
         quantity: quantity
       });
-
-      // Refresh the table after adding a new product
-      getProducts2();
+      getFinalProducts();
     }
 
-    // Function to update product name in Firestore and table
-    async function updateProductName2(productId, newName) {
-      await firestore2.collection('packaging').doc(productId).update({
+    // Function to update final product name in Firestore and table
+    async function updateFinalProductName(productId, newName) {
+      await firestore.collection('finalProducts').doc(productId).update({
         name: newName
       });
-
-      // Refresh the table after updating name
-      getProducts2();
+      getFinalProducts();
     }
 
     // Function to add quantity to Firestore and table
-    async function addQuantity2(productId) {
-      const inputElement = document.getElementById(`quantityInput2_${productId}`);
+    async function addFinalProductQuantity(productId) {
+      const inputElement = document.getElementById(`quantityInput_${productId}`);
       const quantityToAdd = parseInt(inputElement.value, 10);
 
       if (isNaN(quantityToAdd) || quantityToAdd <= 0) {
@@ -120,17 +116,15 @@
         return;
       }
 
-      await firestore2.collection('packaging').doc(productId).update({
+      await firestore.collection('finalProducts').doc(productId).update({
         quantity: firebase.firestore.FieldValue.increment(quantityToAdd)
       });
-
-      // Refresh the table after updating quantity
-      getProducts2();
+      getFinalProducts();
     }
 
     // Function to remove quantity from Firestore and table
-    async function removeQuantity2(productId) {
-      const inputElement = document.getElementById(`quantityInput2_${productId}`);
+    async function removeFinalProductQuantity(productId) {
+      const inputElement = document.getElementById(`quantityInput_${productId}`);
       const quantityToRemove = parseInt(inputElement.value, 10);
 
       if (isNaN(quantityToRemove) || quantityToRemove <= 0) {
@@ -138,37 +132,46 @@
         return;
       }
 
-      await firestore2.collection('packaging').doc(productId).update({
+      await firestore.collection('finalProducts').doc(productId).update({
         quantity: firebase.firestore.FieldValue.increment(-quantityToRemove)
       });
+      getFinalProducts();
+    }
 
-      // Refresh the table after updating quantity
-      getProducts2();
+    // Function to delete a final product from Firestore and table
+    function deleteFinalProduct(productId) {
+      const isConfirmed = confirm('Are you sure you want to delete this product?');
+
+      if (isConfirmed) {
+        firestore.collection('finalProducts').doc(productId).delete()
+          .then(() => getFinalProducts())
+          .catch((error) => console.error("Error deleting product: ", error));
+      }
     }
 
     // Function to check and apply red background for low quantity
-    function checkQuantityBackground2() {
-      const tableRows = document.getElementById('productTableBody2').getElementsByTagName('tr');
+    function checkFinalProductQuantityBackground() {
+      const tableRows = document.getElementById('finalProductTableBody').getElementsByTagName('tr');
 
       for (let i = 0; i < tableRows.length; i++) {
-        const quantityCell = tableRows[i].getElementsByTagName('td')[2]; // Assuming quantity is in the third column
+        const quantityCell = tableRows[i].getElementsByTagName('td')[2];
         const quantityValue = parseInt(quantityCell.innerText, 10);
 
-        // Apply red background if quantity is lower than 3000
         if (quantityValue < 3000) {
           quantityCell.style.backgroundColor = 'red';
         } else {
-          quantityCell.style.backgroundColor = ''; // Reset background color if not lower than 3000
+          quantityCell.style.backgroundColor = '';
         }
       }
     }
 
-    // Function to render products in the table
-    function renderProducts2(products) {
-      const tableBody = document.getElementById('productTableBody2');
+    // Function to render final products in the table
+    function renderFinalProducts(products) {
+      const tableBody = document.getElementById('finalProductTableBody');
       tableBody.innerHTML = '';
-      for (let i = 0; i < 10; i++) { // Set to 10 rows
-        const product = products[i] || {};
+
+      for (let i = 0; i < products.length; i++) {
+        const product = products[i];
         const productId = product.id;
         const productName = product.name || "No Name";
         const productQuantity = product.quantity || 0;
@@ -178,146 +181,100 @@
           <td>${i + 1}</td>
           <td>${productName}</td>
           <td>${productQuantity}</td>
-          <td><input type="text" id="nameInput2_${productId}" value="${productName}" /></td>
-          <td><button onclick="updateProduct2('${productId}')">Update</button></td>
-          <td><input type="number" id="quantityInput2_${productId}" value="0" onkeydown="return event.key !== 'Enter';" /></td>
-          <td><button onclick="addQuantityButtonClick2('${productId}')">Add</button></td>
-          <td><button class="buttonnn" onclick="removeQuantityButtonClick2('${productId}')">Remove</button></td>
+          <td><input type="text" id="nameInput_${productId}" value="${productName}" /></td>
+          <td><button onclick="updateFinalProductName('${productId}')">تعديل</button></td>
+          <td><input type="number" id="quantityInput_${productId}" value="0" onkeydown="return event.key !== 'Enter';" /></td>
+          <td><button onclick="addFinalProductQuantityButtonClick('${productId}')">إضافة</button></td>
+          <td><button class="buttonnn" onclick="removeFinalProductQuantityButtonClick('${productId}')">إقصاء</button></td>
+          <td><button class="buttonnn" onclick="deleteFinalProduct('${productId}')">حذف المنتج</button></td>
         `;
 
         tableBody.appendChild(row);
       }
 
-      // Check and apply red background after rendering products
-      checkQuantityBackground2();
+      checkFinalProductQuantityBackground();
     }
 
-    // Function to get products from Firestore in the 'packaging' collection
-    async function getProducts2() {
-      const productsCollection = await firestore2.collection('packaging').get();
+    // Function to get final products from Firestore in the 'finalProducts' collection
+    async function getFinalProducts() {
+      const productsCollection = await firestore.collection('finalProducts').get();
       const products = productsCollection.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      renderProducts2(products);
+      renderFinalProducts(products);
     }
 
     // Event listener for the form submission
-    const form2 = document.getElementById('productForm2');
+    const finalProductForm = document.getElementById('finalProductForm');
 
-    form2.addEventListener('submit', async (e) => {
+    finalProductForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const productName = document.getElementById('productName2').value;
-      const productQuantity = document.getElementById('productQuantity2').value;
+      const finalProductName = document.getElementById('finalProductName').value;
+      const finalProductQuantity = document.getElementById('finalProductQuantity').value;
 
-      // Check if either name or quantity is provided
-      if (!productName && !productQuantity) {
-        alert('Please enter a name or quantity.');
+      if (!finalProductName || isNaN(finalProductQuantity) || finalProductQuantity <= 0) {
+        alert('Please enter a valid name and quantity.');
         return;
       }
 
-      // Add a new product to Firestore with the provided name and quantity
-      await addProduct2(productName, parseInt(productQuantity, 10));
+      await addFinalProduct(finalProductName, parseInt(finalProductQuantity, 10));
 
-      // Clear the form fields
-      document.getElementById('productName2').value = '';
-      document.getElementById('productQuantity2').value = '';
+      document.getElementById('finalProductName').value = '';
+      document.getElementById('finalProductQuantity').value = '';
     });
 
-    // Event listener for the "Update" button in cell 5
-    function updateProduct2(productId) {
-      const originalNameInput = document.getElementById(`nameInput2_${productId}`);
-      const newName = originalNameInput.value;
-
-      updateProductName2(productId, newName);
-    }
-
     // Event listener for name input changes
-    document.getElementById('productTableBody2').addEventListener('input', (e) => {
+    document.getElementById('finalProductTableBody').addEventListener('input', (e) => {
       const targetId = e.target.id;
       const productId = targetId.split('_')[1];
 
-      // Check if the input is for updating quantity
-      if (targetId.includes('quantityInput2')) {
+      if (targetId.includes('quantityInput')) {
         return;
       }
 
       const newName = e.target.value;
 
-      // Update product name when the "Update" button is clicked
-      // This prevents immediate update on input change
-      document.getElementById(`nameInput2_${productId}`).value = newName;
+      document.getElementById(`nameInput_${productId}`).value = newName;
     });
 
     // Event listener for the "Add" button in cell 7
-    function addQuantityButtonClick2(productId) {
-      addQuantity2(productId);
+    function addFinalProductQuantityButtonClick(productId) {
+      addFinalProductQuantity(productId);
     }
 
     // Event listener for the "Remove" button in cell 8
-    function removeQuantityButtonClick2(productId) {
-      removeQuantity2(productId);
+    function removeFinalProductQuantityButtonClick(productId) {
+      removeFinalProductQuantity(productId);
     }
 
-    // Get and render products on page load
-    getProducts2();
+    getFinalProducts();
 
+    // Function to export final product data to CSV
+    function exportFinalProductData() {
+      const tableRows = document.getElementById('finalProductTableBody').getElementsByTagName('tr');
+      const data = [];
 
+      for (let i = 0; i < tableRows.length; i++) {
+        const cells = tableRows[i].getElementsByTagName('td');
+        const rowData = [
+          cells[0].innerText,
+          cells[1].innerText,
+          cells[2].innerText
+        ];
+        data.push(rowData.join(','));
+      }
 
-     // Firebase configuration (replace with your actual config)
-     const firebaseConfig = {
-        apiKey: "AIzaSyCd-EUiNOFw7FvGpVbqniU7vnr1zV4-Tjk",
-        authDomain: "maasel-prince.firebaseapp.com",
-        projectId: "maasel-prince",
-        storageBucket: "maasel-prince.appspot.com",
-        messagingSenderId: "247610669994",
-        appId: "1:247610669994:web:6d7ad602425782098bc9d3",
-    };
+      const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), data.join('\n')], { type: 'text/csv;charset=utf-8' });
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'exported_final_product_data.csv';
 
-    // Check if the user is authenticated on page load
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (!user) {
-            // If the user is not authenticated, redirect to the login page
-            window.location.href = 'loginpage.html';
-        }
-    });
+      document.body.appendChild(link);
+      link.click();
 
-
-    function exportData() {
-  // Get the table rows
-  const tableRows = document.getElementById('productTableBody2').getElementsByTagName('tr');
-  
-  // Prepare the data
-  const data = [];
-  for (let i = 0; i < tableRows.length; i++) {
-    const cells = tableRows[i].getElementsByTagName('td');
-    const rowData = [
-      cells[0].innerText, // ID
-      cells[1].innerText, // Name
-      cells[2].innerText  // Quantity
-    ];
-    data.push(rowData.join(','));
-  }
-
-  // Create a Blob with the data, specifying UTF-8 encoding
-  const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), data.join('\n')], { type: 'text/csv;charset=utf-8' });
-
-  // Create a link to download the file
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.download = 'exported_data.csv';
-
-  // Append the link to the document and trigger a click to start the download
-  document.body.appendChild(link);
-  link.click();
-
-  // Remove the link from the document
-  document.body.removeChild(link);
-}
+      document.body.removeChild(link);
+    }
   </script>
-
 </body>
 
 </html>
