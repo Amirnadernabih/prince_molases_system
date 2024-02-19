@@ -72,7 +72,7 @@
     </thead>
     <tbody id="productTableBody2"></tbody>
   </table>
-
+  <button onclick="exportData()" style="margin-top: 20px;">Export Data To Excel Sheet</button>
   <script>
     // Firebase configuration (replace with your actual config)
     const firebaseConfig2 = {
@@ -282,6 +282,38 @@
             window.location.href = 'loginpage.html';
         }
     });
+
+    function exportData() {
+  // Get the table rows
+  const tableRows = document.getElementById('productTableBody2').getElementsByTagName('tr');
+  
+  // Prepare the data
+  const data = [];
+  for (let i = 0; i < tableRows.length; i++) {
+    const cells = tableRows[i].getElementsByTagName('td');
+    const rowData = [
+      cells[0].innerText, // ID
+      cells[1].innerText, // Name
+      cells[2].innerText  // Quantity
+    ];
+    data.push(rowData.join(','));
+  }
+
+  // Create a Blob with the data, specifying UTF-8 encoding
+  const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), data.join('\n')], { type: 'text/csv;charset=utf-8' });
+
+  // Create a link to download the file
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = 'exported_data.csv';
+
+  // Append the link to the document and trigger a click to start the download
+  document.body.appendChild(link);
+  link.click();
+
+  // Remove the link from the document
+  document.body.removeChild(link);
+}
   </script>
 
 </body>
