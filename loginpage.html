@@ -67,41 +67,47 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
     <script>
-        // Firebase configuration (replace with your actual config)
-        const firebaseConfig = {
+       // Firebase configuration (replace with your actual config)
+       const firebaseConfig = {
             apiKey: "AIzaSyCd-EUiNOFw7FvGpVbqniU7vnr1zV4-Tjk",
-      authDomain: "maasel-prince.firebaseapp.com",
-      projectId: "maasel-prince",
-      storageBucket: "maasel-prince.appspot.com",
-      messagingSenderId: "247610669994",
-      appId: "1:247610669994:web:6d7ad602425782098bc9d3",
+            authDomain: "maasel-prince.firebaseapp.com",
+            projectId: "maasel-prince",
+            storageBucket: "maasel-prince.appspot.com",
+            messagingSenderId: "247610669994",
+            appId: "1:247610669994:web:6d7ad602425782098bc9d3",
         };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        // Event listener for the form submission
-        const loginForm = document.getElementById('loginForm');
+        // Set persistence to 'session'
+        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(() => {
+                // Existing code for form submission and authentication
+                const loginForm = document.getElementById('loginForm');
 
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
 
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
 
-            try {
-                // Sign in with Firebase Authentication
-                const userCredential = await auth.signInWithEmailAndPassword(username, password);
+                    try {
+                        // Sign in with Firebase Authentication
+                        const userCredential = await auth.signInWithEmailAndPassword(username, password);
 
-                // If authentication is successful, redirect to mainpage.html
-                window.location.href = 'mainpage.html';
-            } catch (error) {
-                // Handle authentication errors
-                alert('Invalid username or password. Please try again.');
-            }
-        });
-
+                        // If authentication is successful, redirect to mainpage.html
+                        window.location.href = 'mainpage.html';
+                    } catch (error) {
+                        // Handle authentication errors
+                        alert('Invalid username or password. Please try again.');
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error("Error setting persistence: ", error);
+            });
    
     </script>
 </body>
