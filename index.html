@@ -302,11 +302,13 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Check if the user is authenticated on page load
     firebase.auth().onAuthStateChanged(function (user) {
       if (!user) {
         // If the user is not authenticated, redirect to the login page
         window.location.href = 'loginpage.html';
+      } else {
+        // If the user is authenticated, proceed to load the products
+        getProducts();
       }
     });
 
