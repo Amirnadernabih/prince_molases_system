@@ -110,19 +110,34 @@
             firebase.initializeApp(firebaseConfig);
             const auth = firebase.auth();
 
-            // Check if the user is authenticated on page load
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (!user) {
-                    // If the user is not authenticated, redirect to the login page
-                    window.location.href = 'loginpage.html';
-                }
-            });
+               // Check if the user is authenticated on page load
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (!user) {
+            // If the user is not authenticated and not on the login page, redirect to the login page
+            if (window.location.pathname !== '/loginpage.html') {
+                window.location.href = 'loginpage.html';
+            }
+        }
+    });
 
-            // Add an event listener for beforeunload to sign out the user when the window is about to close
-            window.addEventListener('beforeunload', function () {
-                // Sign out the user
-                firebase.auth().signOut();
-            });
+    // Function to sign out the user
+    function signOutUser() {
+        firebase.auth().signOut().then(function () {
+            // Redirect to the login page after successful sign out
+            window.location.href = 'loginpage.html';
+        }).catch(function (error) {
+            console.error("Error signing out: ", error);
+        });
+    }
+
+    // Add an event listener for a custom logout button or link
+    const logoutButton = document.getElementById('logoutButton'); // Replace 'logoutButton' with your actual button ID or class
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            signOutUser();
+        });
+    }
         </script>
     </div>
 </body>
