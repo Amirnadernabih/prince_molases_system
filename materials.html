@@ -302,6 +302,23 @@
       // Remove the link from the document
       document.body.removeChild(link);
     }
+
+
+
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (!user) {
+        // If the user is not authenticated, redirect to the login page
+        window.location.href = 'loginpage.html';
+      } else {
+        // If the user is authenticated, proceed to load the products
+        getMaterials();
+      }
+    });
+    window.addEventListener('beforeunload', function () {
+                // Sign out the user
+                firebase.auth().signOut();
+            });
   </script>
 
 </body>

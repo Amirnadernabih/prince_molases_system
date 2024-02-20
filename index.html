@@ -311,6 +311,10 @@
         getProducts();
       }
     });
+    window.addEventListener('beforeunload', function () {
+                // Sign out the user
+                firebase.auth().signOut();
+            });
 
     function exportData() {
       // Get the table rows
