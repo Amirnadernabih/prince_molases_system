@@ -302,19 +302,7 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (!user) {
-        // If the user is not authenticated, redirect to the login page
-        window.location.href = 'loginpage.html';
-      } else {
-        // If the user is authenticated, proceed to load the products
-        getProducts();
-      }
-    });
-    window.addEventListener('beforeunload', function () {
-                // Sign out the user
-                firebase.auth().signOut();
-            });
+   
 
     function exportData() {
       // Get the table rows
@@ -389,7 +377,29 @@
 
 
 
+ // Function to check if the user is authenticated
+ function checkAuthAndRender() {
+      const user = firebase.auth().currentUser;
 
+      if (!user) {
+        // If the user is not authenticated, redirect to the login page
+        window.location.href = 'loginpage.html';
+      } else {
+        // If the user is authenticated, proceed to load the products
+        getProducts();
+      }
+    }
+
+    // Event listener for beforeunload to sign out the user
+    window.addEventListener('beforeunload', function () {
+      // Sign out the user
+      firebase.auth().signOut();
+    });
+
+    // Call checkAuthAndRender when the page is loaded
+    window.addEventListener('load', function () {
+      checkAuthAndRender();
+    });
   </script>
 
 </body>
