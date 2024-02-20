@@ -103,3 +103,46 @@ justify-content: center;
 .navlinkkkkkk a:visited {
     color: #000000; /* Purple color for visited links, you can adjust this too */
 }
+
+
+
+
+.navbar {
+  background-color: #f8f9fa; /* Set your desired background color */
+  padding: 10px 0; /* Adjust padding as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+.navbar img {
+  max-height: 40px; /* Adjust the logo's max height as needed */
+  /* You can add more styles to the logo if necessary */
+}
+
+.navbar ul {
+  list-style: none; /* Remove the list-style dot */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+  display: flex;
+}
+
+.navbar li {
+  margin-right: 15px; /* Adjust spacing between links */
+  list-style:none;
+}
+
+.navbar a {
+  color: #000000; /* Set your desired link color */
+  text-decoration: none; /* Remove underlines from links */
+  font-weight: bold; /* Set link font weight */
+  font-size: 16px; /* Set link font size */
+}
+
+.navbar a:hover {
+  color: #e9212e; /* Set the link color on hover */
+}
+
+.container-fluid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -14,7 +14,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 20px auto;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -27,16 +27,43 @@
             margin-bottom: 20px;
         }
 
-        .row {
+                    .row {
             display: flex;
-            justify-content: space-around;
             flex-wrap: wrap;
-            gap: 20px;
-        }
+            justify-content: space-around;
+            }
+
+            .row > div {
+            width: calc(33.33% - 10px); /* Adjust width and margin as needed */
+            margin-bottom: 10px; /* Adjust margin as needed */
+            box-sizing: border-box;
+            }
+
+            /* Apply margin-right to every third child */
+            .row > div:nth-child(3n) {
+            margin-right: 0;
+            }
+            /* Responsive styles */
+            @media (max-width: 768px) {
+            .row > div {
+                width: calc(50% - 10px); /* Two columns on smaller screens */
+            }
+
+            /* Remove margin-right on the second child for two columns */
+            .row > div:nth-child(2n) {
+                margin-right: 0;
+            }
+            }
+
+            @media (max-width: 480px) {
+            .row > div {
+                width: 100%; /* One column on even smaller screens */
+            }
+            }
 
         .link-box {
-            height: 150px;
-            width: 150px;
+            height: 200px;
+            width: 200px;
             text-align: center;
             padding: 20px;
             border: 1px solid #ccc;
@@ -51,18 +78,21 @@
         .link-box a {
             text-decoration: none;
             color: #000;
-            font-size:20px ;
+            font-size:25px ;
         }
 
         .link-box:hover {
             background-color: #dddddd;
+        }
+        .link-box:hover a {
+            color: #e9212e;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>WELCOME TO PRINCE MOLASES SYSTEM</h1>
+            <img src="logo.png">
         </div>
 
         <div class="row">
