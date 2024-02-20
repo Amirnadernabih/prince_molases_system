@@ -96,8 +96,8 @@
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
         <script>
-            // Firebase configuration (replace with your actual config)
-            const firebaseConfig = {
+         // Firebase configuration (replace with your actual config)
+         const firebaseConfig = {
                 apiKey: "AIzaSyCd-EUiNOFw7FvGpVbqniU7vnr1zV4-Tjk",
                 authDomain: "maasel-prince.firebaseapp.com",
                 projectId: "maasel-prince",
@@ -116,6 +116,12 @@
                     // If the user is not authenticated, redirect to the login page
                     window.location.href = 'loginpage.html';
                 }
+            });
+
+            // Add an event listener for beforeunload to sign out the user when the window is about to close
+            window.addEventListener('beforeunload', function () {
+                // Sign out the user
+                firebase.auth().signOut();
             });
         </script>
     </div>
