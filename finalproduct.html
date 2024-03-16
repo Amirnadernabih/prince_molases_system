@@ -184,12 +184,7 @@
         const quantityCell = tableRows[i].getElementsByTagName('td')[2]; // Assuming quantity is in the third column
         const quantityValue = parseInt(quantityCell.innerText, 10);
 
-        // Apply red background if quantity is lower than 3000
-        if (quantityValue < 3000) {
-          quantityCell.style.backgroundColor = 'red';
-        } else {
-          quantityCell.style.backgroundColor = ''; // Reset background color if not lower than 3000
-        }
+   
       }
     }
 
